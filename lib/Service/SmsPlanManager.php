@@ -3,48 +3,48 @@
 
 class SmsPlanManager{
 	private $smsLoaderResult;
+	private $smsPlanLessSms;
 	
 	public function __construct(SmsLoaderResult $smsLoaderResult){
 		$this->smsLoaderResult=$smsLoaderResult;
 	}
 	
 	public function findPlan(){
-		print_r($this->smsLoaderResult->getSmsObjsArraySortedByIncDesc());
-		print_r($this->smsLoaderResult->getRequirements());
 		
-		$smsPlanArray=array();
+		$this->calcPlanLessSms();
+		
+		
+	}
+	
+	private function calcPlanLessSms(){
+		$smsPlanElements=array();
 		
 		$requiredIncomeTmp=0;
+		$smsArraySortedByIncDesc=$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc();
 		
-		foreach($this->smsLoaderResult->getSmsObjsArraySortedByIncDesc() as $sms){
+		foreach($smsArraySortedByIncDesc as $sms){
 				while(($requiredIncomeTmp+$sms->getIncome())
 				<
 			$this->smsLoaderResult->getRequiredIncome()){
 				$requiredIncomeTmp=$requiredIncomeTmp+$sms->getIncome();
-				$smsPlanArray[]=$sms;
+				$smsPlanElements[]=$sms;
 				
 			}
 		}
-		$endArrayElement=end($this->smsLoaderResult->getSmsObjsArraySortedByIncDesc());
+		
+		$endArrayElement=end($smsArraySortedByIncDesc);
 		$requiredIncomeTmp=$requiredIncomeTmp+$endArrayElement->getIncome();
-		$smsPlanArray[]=$endArrayElement;
+		$smsPlanElements[]=$endArrayElement;
 		
-		/*while(($requiredIncomeTmp+$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc()[0]->getIncome())
-			<
-		$this->smsLoaderResult->getRequiredIncome()){
-			$requiredIncomeTmp=$requiredIncomeTmp+$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc()[0]->getIncome();
-			$smsPlanArray[]=$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc()[0];
-			
-		}*/
+		$this->smsPlanLessSms=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LESS_SMS,$smsPlanElements);
 		
-		/*if(($requiredIncomeTmp+$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc()[0]->getIncome())
-			<
-		$this->smsLoaderResult->getRequiredIncome()){
-			$requiredIncomeTmp=$requiredIncomeTmp+$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc()[0]->getIncome();
-			$smsPlanArray[]=$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc()[0]->getIncome();
-		}*/
 		
-		print_r($smsPlanArray);
-		print_r($requiredIncomeTmp);
+		print_r($this->smsPlanLessSms);
+		
+		print_r($this->smsPlanLessSms->getIncome());
+		echo "\n";
+		print_r($this->smsPlanLessSms->getPrice());
+		echo "\n";
+		print_r($this->smsPlanLessSms->getSmsQuantity());
 	}
 }

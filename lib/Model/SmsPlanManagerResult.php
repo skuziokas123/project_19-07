@@ -1,36 +1,39 @@
 <?php
 
 class SmsPlanManagerResult{
-	private $smsObjsArray;
-	private $requirements;
+	const SMS_PLAN_TITLE_LESS_SMS="LESS_SMS";
+	const SMS_PLAN_TITLE_EFFICIENT="EFFICIENT_INCOME";
+	private $title;
+	private $smsPlanElements;
 	
-	public function __construct(array $smsObjsArray, Requirements $requirements)
+	public function __construct($title, array $smsPlanElements)
     {
-        $this->smsObjsArray = $smsObjsArray;
-		$this->requirements = $requirements;
+		$this->title=$title;
+        $this->smsPlanElements = $smsPlanElements;
+		
+		
     }
 	
-	public function getRequiredIncome(){
-		return $this->requirements->getRequiredIncome();
+	public function getIncome(){
+		$income=0;
+		foreach($this->smsPlanElements as $sms){
+			$income=$sms->getIncome()+$income;
+		}
+		return $income;
 	}
 	
-	public function getRequirements(){
-		return $this->requirements;
+	public function getPrice(){
+		$price=0;
+		foreach($this->smsPlanElements as $sms){
+			$price=$sms->getPrice()+$price;
+		}
+		return $price;
 	}
 	
-	public function getSmsObjsArraySortedByIncDesc(){
-		$smsObjsArraySortedByIncDesc=array();
-		
-		usort($this->smsObjsArray, function($a, $b)
-		{
-			return ($a->getIncome() < $b->getIncome());
-		});
-		
-		return $this->smsObjsArray;
-		
-		/*foreach($this->smsObjsArray as $smsObj){
-			
-		}*/
+	public function getSmsQuantity(){
+		return count($this->smsPlanElements);
 	}
+	
+	
 	
 }

@@ -9,6 +9,7 @@ $configuration = array(
 require_once __DIR__.'/lib/Service/Container.php';
 require_once __DIR__.'/lib/Model/Sms.php';
 require_once __DIR__.'/lib/Model/SmsLoaderResult.php';
+require_once __DIR__.'/lib/Model/SmsPlanManagerResult.php';
 require_once __DIR__.'/lib/Model/Requirements.php';
 require_once __DIR__.'/lib/Service/SmsLoader.php';
 require_once __DIR__.'/lib/Service/SmsPlanManager.php';
