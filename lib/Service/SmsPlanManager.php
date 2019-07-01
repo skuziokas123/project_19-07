@@ -4,6 +4,7 @@
 class SmsPlanManager{
 	private $smsLoaderResult;
 	private $smsPlanLessSms;
+	private $smsPlanEfficient;
 	
 	public function __construct(SmsLoaderResult $smsLoaderResult){
 		$this->smsLoaderResult=$smsLoaderResult;
@@ -12,7 +13,12 @@ class SmsPlanManager{
 	public function findPlan(){
 		
 		$this->calcPlanLessSms();
+		$this->calcPlanEfficient();
 		
+		
+	}
+	
+	private function calcPlanEfficient(){
 		
 	}
 	

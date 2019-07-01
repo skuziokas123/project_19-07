@@ -19,4 +19,8 @@ class Sms{
 	public function getIncome(){
 		return $this->income;
 	}
+	
+	public function getEfficiencyPercent(){
+		return ($this->income/$this->price)*100;
+	}
 }
