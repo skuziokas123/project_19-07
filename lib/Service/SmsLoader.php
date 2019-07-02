@@ -16,14 +16,15 @@ class SmsLoader{
 		$this->fetchAllSmsData();
 		//print_r($jsonContents);
 		$smsObjsArray=array();
+		$requirements=new Requirements($this->jsonContents['required_income']);
 		foreach($this->jsonContents['sms_list'] as $list){
-			$smsObjsArray[]=$this->createSmsFromData($list);
+			$smsObjsArray[]=$this->createSmsFromData($list, $requirements);
 			//print_r($smsObjsArray);
 			
 			//exit();
 		}
 		
-		$requirements=new Requirements($this->jsonContents['required_income']);
+		
 		
 		return new SmsLoaderResult($smsObjsArray, $requirements);
 	}
@@ -35,9 +36,9 @@ class SmsLoader{
         $this->jsonContents =  json_decode($this->jsonContents, true);
     }
 	
-	private function createSmsFromData(array $smsData)
+	private function createSmsFromData(array $smsData, Requirements $requirements)
     {
-        $sms = new Sms($smsData['price'],$smsData['income']);
+        $sms = new Sms($smsData['price'],$smsData['income'], $requirements);
         /*$sms->setId($shipData['id']);
         $sms->setWeaponPower($shipData['weapon_power']);
         $sms->setJediFactor($shipData['jedi_factor']);

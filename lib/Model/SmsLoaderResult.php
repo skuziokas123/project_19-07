@@ -47,4 +47,27 @@ class SmsLoaderResult{
 
 	}
 	
+	//getSmsThatCanPayObjsArray(paySum)
+	public function getSmsThatCanPayObjsArray($paySum){
+		$smsThatCanPay=array();
+		
+		foreach($this->smsObjsArray as $sms){
+			if($sms->getIncome()>=$paySum){
+				//getPayCost($sum)
+				//getRealPayPrice
+				$smsThatCanPay[]=$sms;
+			}
+		}
+		
+		//Sms::needPay=$paySum;
+		$smsThatCanPay[0]->getRequirements()->setPaySum($paySum);
+		
+		usort($smsThatCanPay, function($a, $b)
+		{
+			return ($a->getRealPayPrice() > $b->getRealPayPrice());
+		});
+		
+		return $smsThatCanPay;
+	}
+	
 }

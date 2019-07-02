@@ -24,13 +24,13 @@ class SmsPlanManager{
 		
 		$requiredIncomeTmp=0;
 		$smsArraySortedByEfficiency=$this->smsLoaderResult->getSmsObjsArraySortedByEfficiency();
-		echo "\n";
-		print_r($smsArraySortedByEfficiency);
+		//echo "\n";
+		//print_r($smsArraySortedByEfficiency);
 		
-		foreach($smsArraySortedByEfficiency as $sms){
+		/*foreach($smsArraySortedByEfficiency as $sms){
 			echo "\n";
 			print_r($sms->getEfficiencyPercent());
-		}
+		}*/
 		
 		//exit();
 		
@@ -45,28 +45,33 @@ class SmsPlanManager{
 		}
 		
 		//kiek liko moketi?
-		echo "\n";
-		print_r($this->howMuchIsLeftToPay($smsPlanElements));
-		exit();
+		//echo "\n";
+		//print_r($this->howMuchIsLeftToPay($smsPlanElements));
+		//exit();
 		
 		$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
 		
+		//print_r($this->smsLoaderResult->getSmsThatCanPayObjsArray($leftToPay));
+		//exit();
+		
 		//findEfficientSmsForLastPay
 		
-		/*$endArrayElement=end($smsArraySortedByEfficiency);
-		$requiredIncomeTmp=$requiredIncomeTmp+$endArrayElement->getIncome();
-		$smsPlanElements[]=$endArrayElement;*/
+		$firstElement=$this->smsLoaderResult->getSmsThatCanPayObjsArray($leftToPay)[0];
+		$requiredIncomeTmp=$requiredIncomeTmp+$firstElement->getIncome();
+		$smsPlanElements[]=$firstElement;
 		
 		$this->smsPlanEfficient=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_EFFICIENT,$smsPlanElements);
 		
 		
 		print_r($this->smsPlanEfficient);
-		
+		echo "\n";
 		print_r($this->smsPlanEfficient->getIncome());
 		echo "\n";
 		print_r($this->smsPlanEfficient->getPrice());
 		echo "\n";
 		print_r($this->smsPlanEfficient->getSmsQuantity());
+		
+		exit();
 		
 	}
 	
@@ -115,6 +120,7 @@ class SmsPlanManager{
 	}
 	
 	private function findEfficientSmsForLastPay($leftToPay){
+		//getSmsThatCanPayObjsArray(paySum)
 		$smsObjsArray=$this->smsLoaderResult->getSmsObjsArray();
 		$smsCandidatesForLastPay=array();
 		foreach($smsObjsArray as $sms){

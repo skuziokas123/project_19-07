@@ -3,7 +3,7 @@
     {"price": 0.5, "income": 0.41},
     {"price": 1, "income": 0.96},
     {"price": 2, "income": 1.91},
-    {"price": 3, "income": 2.9}
+    {"price": 3.5, "income": 2.9}
   ],
   "required_income": 11
 }

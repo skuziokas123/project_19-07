@@ -2,6 +2,7 @@
 
 class Requirements{
 	private $requiredIncome;
+	private $paySum;
 	
 	public function __construct($requiredIncome)
     {
@@ -10,6 +11,14 @@ class Requirements{
 	
 	public function getRequiredIncome(){
 		return $this->requiredIncome;
+	}
+	
+	public function getPaySum(){
+		return $this->paySum;
+	}
+	
+	public function setPaySum($paySum){
+		$this->paySum=$paySum;
 	}
 	
 }

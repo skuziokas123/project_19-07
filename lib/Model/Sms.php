@@ -3,12 +3,15 @@
 
 
 class Sms{
+	//static $needPay;
 	private $price;
 	private $income;
+	private $requirements;
 	//static $required_income;
-	public function __construct($price, $income){
+	public function __construct($price, $income, Requirements $requirements){
 		$this->price=$price;
 		$this->income=$income;
+		$this->requirements = $requirements;
 		
 	}
 	
@@ -24,10 +27,18 @@ class Sms{
 		return ($this->income/$this->price)*100;
 	}
 	
-	public function getRealPayPrice($needPay){
-		if($this->income<$needPay){
-			throw new Exception("Income must be > needPay");
+	public function getRequirements(){
+		return $this->requirements;
+	}
+	
+	public function getRealPayPrice(){
+		if($this->income < $this->requirements->getPaySum()){
+			throw new Exception("Income must be > getPaySum");
 		}
-		return $this->price-$needPay;
+		//echo "\n *** 457 \n";
+		//print_r($this->price-$this->requirements->getPaySum());
+		//echo "\n"; 
+		
+		return $this->price-$this->requirements->getPaySum();
 	}
 }
