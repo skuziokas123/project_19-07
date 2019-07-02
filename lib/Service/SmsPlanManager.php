@@ -19,6 +19,54 @@ class SmsPlanManager{
 	}
 	
 	private function calcPlanEfficient(){
+		//getSmsObjsArraySortedByEfficiency
+		$smsPlanElements=array();
+		
+		$requiredIncomeTmp=0;
+		$smsArraySortedByEfficiency=$this->smsLoaderResult->getSmsObjsArraySortedByEfficiency();
+		echo "\n";
+		print_r($smsArraySortedByEfficiency);
+		
+		foreach($smsArraySortedByEfficiency as $sms){
+			echo "\n";
+			print_r($sms->getEfficiencyPercent());
+		}
+		
+		//exit();
+		
+		foreach($smsArraySortedByEfficiency as $sms){
+				while(($requiredIncomeTmp+$sms->getIncome())
+				<
+			$this->smsLoaderResult->getRequiredIncome()){
+				$requiredIncomeTmp=$requiredIncomeTmp+$sms->getIncome();
+				$smsPlanElements[]=$sms;
+				
+			}
+		}
+		
+		//kiek liko moketi?
+		echo "\n";
+		print_r($this->howMuchIsLeftToPay($smsPlanElements));
+		exit();
+		
+		$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
+		
+		//findEfficientSmsForLastPay
+		
+		/*$endArrayElement=end($smsArraySortedByEfficiency);
+		$requiredIncomeTmp=$requiredIncomeTmp+$endArrayElement->getIncome();
+		$smsPlanElements[]=$endArrayElement;*/
+		
+		$this->smsPlanEfficient=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_EFFICIENT,$smsPlanElements);
+		
+		
+		print_r($this->smsPlanEfficient);
+		
+		print_r($this->smsPlanEfficient->getIncome());
+		echo "\n";
+		print_r($this->smsPlanEfficient->getPrice());
+		echo "\n";
+		print_r($this->smsPlanEfficient->getSmsQuantity());
 		
 	}
 	
@@ -53,4 +101,31 @@ class SmsPlanManager{
 		echo "\n";
 		print_r($this->smsPlanLessSms->getSmsQuantity());
 	}
+	
+	private function howMuchIsLeftToPay($alredyPayedSms){
+		//$leftToPay=0;
+		$payed=0;
+		//$needPay=0;
+		
+		foreach($alredyPayedSms as $sms){
+			$payed=$payed+$sms->getIncome();
+		}
+		return $this->smsLoaderResult->getRequiredIncome()-$payed;
+		
+	}
+	
+	private function findEfficientSmsForLastPay($leftToPay){
+		$smsObjsArray=$this->smsLoaderResult->getSmsObjsArray();
+		$smsCandidatesForLastPay=array();
+		foreach($smsObjsArray as $sms){
+			if($sms->getIncome()>=$leftToPay){
+				//getPayCost($sum)
+				//getRealPayPrice
+				$smsCandidatesForLastPay[]=$sms;
+			}
+		}
+	}
+	
+	
+	
 }

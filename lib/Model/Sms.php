@@ -23,4 +23,11 @@ class Sms{
 	public function getEfficiencyPercent(){
 		return ($this->income/$this->price)*100;
 	}
+	
+	public function getRealPayPrice($needPay){
+		if($this->income<$needPay){
+			throw new Exception("Income must be > needPay");
+		}
+		return $this->price-$needPay;
+	}
 }

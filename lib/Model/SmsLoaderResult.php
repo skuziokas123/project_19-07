@@ -14,23 +14,37 @@ class SmsLoaderResult{
 		return $this->requirements->getRequiredIncome();
 	}
 	
-	public function getRequirements(){
+	/*public function getRequirements(){
 		return $this->requirements;
+	}*/
+	
+	public function getSmsObjsArray(){
+		return $this->smsObjsArray;
 	}
 	
 	public function getSmsObjsArraySortedByIncDesc(){
-		$smsObjsArraySortedByIncDesc=array();
+		$smsObjsArraySortedByIncDesc=$this->smsObjsArray;
 		
-		usort($this->smsObjsArray, function($a, $b)
+		//usort($this->smsObjsArray, function($a, $b)
+		usort($smsObjsArraySortedByIncDesc, function($a, $b)
 		{
-			return ($a->getIncome() < $b->getIncome());
+			return ($a->getEfficiencyPercent() < $b->getEfficiencyPercent());
 		});
 		
-		return $this->smsObjsArray;
+		return $smsObjsArraySortedByIncDesc;
+
+	}
+	
+	public function getSmsObjsArraySortedByEfficiency(){
+		$smsObjsArraySortedByEfficiency=$this->smsObjsArray;
 		
-		/*foreach($this->smsObjsArray as $smsObj){
-			
-		}*/
+		usort($smsObjsArraySortedByEfficiency, function($a, $b)
+		{
+			return ($a->getEfficiencyPercent() < $b->getEfficiencyPercent());
+		});
+		
+		return $smsObjsArraySortedByEfficiency;
+
 	}
 	
 }
