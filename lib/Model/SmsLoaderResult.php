@@ -28,7 +28,7 @@ class SmsLoaderResult{
 		//usort($this->smsObjsArray, function($a, $b)
 		usort($smsObjsArraySortedByIncDesc, function($a, $b)
 		{
-			return ($a->getEfficiencyPercent() < $b->getEfficiencyPercent());
+			return ($a->getIncome() < $b->getIncome());
 		});
 		
 		return $smsObjsArraySortedByIncDesc;

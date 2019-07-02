@@ -71,7 +71,7 @@ class SmsPlanManager{
 		echo "\n";
 		print_r($this->smsPlanEfficient->getSmsQuantity());
 		
-		exit();
+		//exit();
 		
 	}
 	
