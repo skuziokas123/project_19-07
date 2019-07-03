@@ -10,4 +10,8 @@ $container=new Container($configuration);
 //print_r($smsLoader->load());
 
 $smsPlanManager=$container->getSmsPlanManager();
-print_r($smsPlanManager->findPlan());
+$winnerPlan=$smsPlanManager->findPlan();
+
+//print_r($smsPlanManager->findPlan());
+$printer=$container->getPrinter();
+$printer->printItems($winnerPlan);

@@ -7,6 +7,8 @@ class Printer{
 			$printItems[]=$element->getPrice();
 		}
 		
+		sort($printItems);
+		
 		$printItemsJSON = json_encode($printItems);
 		echo $printItemsJSON;
 	}
