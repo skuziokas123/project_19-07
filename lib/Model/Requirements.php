@@ -3,6 +3,7 @@
 class Requirements{
 	private $requiredIncome;
 	private $paySum;
+	private $maxMessages;
 	
 	public function __construct($requiredIncome)
     {
@@ -19,6 +20,14 @@ class Requirements{
 	
 	public function setPaySum($paySum){
 		$this->paySum=$paySum;
+	}
+	
+	public function getMaxMessages(){
+		return $this->maxMessages;
+	}
+	
+	public function setMaxMessages($maxMessages){
+		$this->maxMessages=$maxMessages;
 	}
 	
 }

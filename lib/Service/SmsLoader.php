@@ -17,6 +17,15 @@ class SmsLoader{
 		//print_r($jsonContents);
 		$smsObjsArray=array();
 		$requirements=new Requirements($this->jsonContents['required_income']);
+		
+		if((isset($this->jsonContents['max_messages']))&&
+		//($this->jsonContents['max_messages']))
+		(ctype_digit(strval($this->jsonContents['max_messages']))))
+		{
+			$requirements->setMaxMessages($this->jsonContents['max_messages']);
+			//print_r($requirements);
+		}
+		
 		foreach($this->jsonContents['sms_list'] as $list){
 			$smsObjsArray[]=$this->createSmsFromData($list, $requirements);
 			//print_r($smsObjsArray);
