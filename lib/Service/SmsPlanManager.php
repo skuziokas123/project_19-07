@@ -44,7 +44,7 @@ class SmsPlanManager{
 		foreach($smsArraySortedByIncDesc as $sms){
 			while(($nowHaveMessages<$maxMessages)&&
 			(($requiredIncomeTmp)
-				<=
+				<
 			$this->smsLoaderResult->getRequiredIncome()))
 			{
 				$nowHaveMessages=$nowHaveMessages+1;
@@ -53,6 +53,16 @@ class SmsPlanManager{
 				
 			}
 		}
+		
+		echo "\n".$nowHaveMessages." < ".$maxMessages."\n";
+		exit();
+		if($nowHaveMessages<$maxMessages){
+			echo "\n";
+			echo "hello 758";
+			echo "\n";
+			throw new ReachMaxMessagesException();
+		}
+		
 		$this->smsPlanLimitByMaxMessages=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LIMIT_BY_MAX_MESSAGES,$smsPlanElements);
 		
 		
