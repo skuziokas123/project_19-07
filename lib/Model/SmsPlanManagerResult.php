@@ -3,6 +3,7 @@
 class SmsPlanManagerResult{
 	const SMS_PLAN_TITLE_LESS_SMS="LESS_SMS";
 	const SMS_PLAN_TITLE_EFFICIENT="EFFICIENT_INCOME";
+	const SMS_PLAN_TITLE_LIMIT_BY_MAX_MESSAGES="LIMIT BY MAX MESSAGES";
 	private $title;
 	private $smsPlanElements;
 	

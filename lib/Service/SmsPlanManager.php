@@ -5,6 +5,8 @@ class SmsPlanManager{
 	private $smsLoaderResult;
 	private $smsPlanLessSms;
 	private $smsPlanEfficient;
+	private $smsPlanLimitByMaxMessages;
+	
 	
 	public function __construct(SmsLoaderResult $smsLoaderResult){
 		$this->smsLoaderResult=$smsLoaderResult;
@@ -17,11 +19,56 @@ class SmsPlanManager{
 		
 		$winnerPlan=$this->smsPlanLessSms->comparePlans($this->smsPlanEfficient);
 		
+		$maxMessages=$winnerPlan->getSmsPlanElements()[0]->getRequirements()->getMaxMessages();
+		$smsQuantity=$winnerPlan->getSmsQuantity();
+		if(($maxMessages!==null)&&($smsQuantity>$maxMessages)){
+			$this->calcPlanLimitByMaxMessages($maxMessages);
+			$winnerPlan=$this->smsPlanLimitByMaxMessages;
+			
+		}
+		
 		//print_r($winnerPlan);
 		
 		return $winnerPlan;
 		
 		
+	}
+	
+	private function calcPlanLimitByMaxMessages($maxMessages){
+		$smsPlanElements=array();
+		
+		$requiredIncomeTmp=0;
+		$nowHaveMessages=0;
+		$smsArraySortedByIncDesc=$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc();
+		
+		foreach($smsArraySortedByIncDesc as $sms){
+			while(($nowHaveMessages<$maxMessages)&&
+			(($requiredIncomeTmp)
+				<=
+			$this->smsLoaderResult->getRequiredIncome()))
+			{
+				$nowHaveMessages=$nowHaveMessages+1;
+				$smsPlanElements[]=$sms;
+				$requiredIncomeTmp=$requiredIncomeTmp+$sms->getIncome();
+				
+			}
+		}
+		$this->smsPlanLimitByMaxMessages=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LIMIT_BY_MAX_MESSAGES,$smsPlanElements);
+		
+		
+		//print_r($this->smsPlanEfficient);
+		echo "\n";
+		echo "\n*** LIMIT BY MAX MESSAGES ***\n";
+		print_r($this->smsPlanLimitByMaxMessages->getIncome());
+		echo "\n";
+		print_r($this->smsPlanLimitByMaxMessages->getPrice());
+		echo "\n";
+		print_r($this->smsPlanLimitByMaxMessages->getSmsQuantity());
+		echo "\n";
+		foreach($this->smsPlanLimitByMaxMessages->getSmsPlanElements() as $sms){
+			echo $sms->getPrice().', ';
+		}
+		echo "\n";
 	}
 	
 	private function calcPlanEfficient(){
@@ -30,15 +77,7 @@ class SmsPlanManager{
 		
 		$requiredIncomeTmp=0;
 		$smsArraySortedByEfficiency=$this->smsLoaderResult->getSmsObjsArraySortedByEfficiency();
-		//echo "\n";
-		//print_r($smsArraySortedByEfficiency);
 		
-		/*foreach($smsArraySortedByEfficiency as $sms){
-			echo "\n";
-			print_r($sms->getEfficiencyPercent());
-		}*/
-		
-		//exit();
 		
 		foreach($smsArraySortedByEfficiency as $sms){
 				while(($requiredIncomeTmp+$sms->getIncome())

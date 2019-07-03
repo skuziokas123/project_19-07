@@ -3,7 +3,7 @@
 class Requirements{
 	private $requiredIncome;
 	private $paySum;
-	private $maxMessages;
+	private $maxMessages=null;
 	
 	public function __construct($requiredIncome)
     {
