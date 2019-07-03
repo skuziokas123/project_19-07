@@ -40,10 +40,10 @@ class SmsPlanManagerResult{
 	
 	public function comparePlans(SmsPlanManagerResult $competitor){
 		$winner=$this;
-		if($winner->getPrice>$competitor->getPrice){
+		if($winner->getPrice()>$competitor->getPrice()){
 			$winner=$competitor;
 		}
-		elseif($winner->getPrice===$competitor->getPrice){
+		elseif($winner->getPrice()===$competitor->getPrice()){
 			if($winner->getSmsQuantity()>$competitor->getSmsQuantity()){
 				$winner=$competitor;
 			}
