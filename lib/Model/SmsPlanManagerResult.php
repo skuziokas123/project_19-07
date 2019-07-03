@@ -14,6 +14,10 @@ class SmsPlanManagerResult{
 		
     }
 	
+	public function getSmsPlanElements(){
+		return $this->smsPlanElements;
+	}
+	
 	public function getIncome(){
 		$income=0;
 		foreach($this->smsPlanElements as $sms){
