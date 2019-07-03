@@ -38,6 +38,20 @@ class SmsPlanManagerResult{
 		return count($this->smsPlanElements);
 	}
 	
+	public function comparePlans(SmsPlanManagerResult $competitor){
+		$winner=$this;
+		if($winner->getPrice>$competitor->getPrice){
+			$winner=$competitor;
+		}
+		elseif($winner->getPrice===$competitor->getPrice){
+			if($winner->getSmsQuantity()>$competitor->getSmsQuantity()){
+				$winner=$competitor;
+			}
+		}
+		
+		return $winner;
+	}
+	
 	
 	
 }

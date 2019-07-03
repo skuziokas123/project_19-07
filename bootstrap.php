@@ -13,4 +13,5 @@ require_once __DIR__.'/lib/Model/SmsPlanManagerResult.php';
 require_once __DIR__.'/lib/Model/Requirements.php';
 require_once __DIR__.'/lib/Service/SmsLoader.php';
 require_once __DIR__.'/lib/Service/SmsPlanManager.php';
+require_once __DIR__.'/lib/Service/Printer.php';
 

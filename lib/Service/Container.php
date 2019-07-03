@@ -6,6 +6,7 @@ class Container{
 	private $smsLoader;
 	private $smsPlanManager;
 	private $configuration;
+	private $printer;
 	
 	public function __construct(array $configuration)
     {
@@ -28,6 +29,15 @@ class Container{
         }
 
         return $this->smsPlanManager;
+    }
+	
+	public function getPrinter()
+    {
+        if ($this->printer === null) {
+            $this->printer = new Printer();
+        }
+
+        return $this->printer;
     }
 	
 	

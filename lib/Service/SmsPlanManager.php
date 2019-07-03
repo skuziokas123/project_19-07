@@ -15,6 +15,12 @@ class SmsPlanManager{
 		$this->calcPlanLessSms();
 		$this->calcPlanEfficient();
 		
+		$winnerPlan=$this->smsPlanLessSms->comparePlans($this->smsPlanEfficient);
+		
+		//print_r($winnerPlan);
+		
+		return $winnerPlan;
+		
 		
 	}
 	
