@@ -22,3 +22,6 @@ catch (impossibleSplitPaymentException $e){
 catch (fileNotFoundException $e){
 	echo $e->getMessage();
 }
+catch (fileDataFormatException $e){
+	echo $e->getMessage();
+}

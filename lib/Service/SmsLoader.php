@@ -13,7 +13,9 @@ class SmsLoader{
     }
 	
 	public function load(){
+		
 		$this->fetchAllSmsData();
+		$this->validateFileData();
 		//print_r($jsonContents);
 		$smsObjsArray=array();
 		$requirements=new Requirements($this->jsonContents['required_income']);
@@ -36,6 +38,16 @@ class SmsLoader{
 		
 		
 		return new SmsLoaderResult($smsObjsArray, $requirements);
+	}
+	
+	private function validateFileData(){
+		/*if(!file_exists($this->filename)){
+			throw New fileNotFoundException("\n*** Nerastas duomenų failas ***\n");
+		}*/
+		if((!isset($this->jsonContents['required_income']))||
+		(!isset($this->jsonContents['sms_list']))){
+			throw New fileDataFormatException("\n*** Blogas failo duomenų formatas ***\n");
+		}
 	}
 	
 	private function fetchAllSmsData()
