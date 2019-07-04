@@ -19,3 +19,6 @@ try {
 catch (impossibleSplitPaymentException $e){
 	echo $e->getMessage();
 }
+catch (fileNotFoundException $e){
+	echo $e->getMessage();
+}

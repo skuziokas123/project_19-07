@@ -40,7 +40,9 @@ class SmsLoader{
 	
 	private function fetchAllSmsData()
     {
-		
+		if(!file_exists($this->filename)){
+			throw New fileNotFoundException("\n*** Nerastas duomenų failas ***\n");
+		}
 		
         $this->jsonContents = file_get_contents($this->filename);
 
