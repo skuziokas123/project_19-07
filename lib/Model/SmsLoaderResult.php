@@ -14,18 +14,13 @@ class SmsLoaderResult{
 		return $this->requirements->getRequiredIncome();
 	}
 	
-	/*public function getRequirements(){
-		return $this->requirements;
-	}*/
-	
 	public function getSmsObjsArray(){
 		return $this->smsObjsArray;
 	}
 	
 	public function getSmsObjsArraySortedByIncDesc(){
 		$smsObjsArraySortedByIncDesc=$this->smsObjsArray;
-		
-		//usort($this->smsObjsArray, function($a, $b)
+
 		usort($smsObjsArraySortedByIncDesc, function($a, $b)
 		{
 			return ($a->getIncome() < $b->getIncome());
@@ -47,19 +42,16 @@ class SmsLoaderResult{
 
 	}
 	
-	//getSmsThatCanPayObjsArray(paySum)
 	public function getSmsThatCanPayObjsArray($paySum){
 		$smsThatCanPay=array();
 		
 		foreach($this->smsObjsArray as $sms){
 			if($sms->getIncome()>=$paySum){
-				//getPayCost($sum)
-				//getRealPayPrice
+				
 				$smsThatCanPay[]=$sms;
 			}
 		}
 		
-		//Sms::needPay=$paySum;
 		$smsThatCanPay[0]->getRequirements()->setPaySum($paySum);
 		
 		usort($smsThatCanPay, function($a, $b)

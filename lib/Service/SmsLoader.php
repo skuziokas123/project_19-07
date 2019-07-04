@@ -16,34 +16,25 @@ class SmsLoader{
 		
 		$this->fetchAllSmsData();
 		$this->validateFileData();
-		//print_r($jsonContents);
 		$smsObjsArray=array();
 		$requirements=new Requirements($this->jsonContents['required_income']);
 		
 		if((isset($this->jsonContents['max_messages']))&&
-		//($this->jsonContents['max_messages']))
 		(ctype_digit(strval($this->jsonContents['max_messages']))))
 		{
 			$requirements->setMaxMessages($this->jsonContents['max_messages']);
-			//print_r($requirements);
 		}
 		
 		foreach($this->jsonContents['sms_list'] as $list){
 			$smsObjsArray[]=$this->createSmsFromData($list, $requirements);
-			//print_r($smsObjsArray);
 			
-			//exit();
 		}
-		
-		
 		
 		return new SmsLoaderResult($smsObjsArray, $requirements);
 	}
 	
 	private function validateFileData(){
-		/*if(!file_exists($this->filename)){
-			throw New fileNotFoundException("\n*** Nerastas duomenų failas ***\n");
-		}*/
+		
 		if((!isset($this->jsonContents['required_income']))||
 		(!isset($this->jsonContents['sms_list']))){
 			throw New fileDataFormatException("\n*** Blogas failo duomenų formatas ***\n");
@@ -64,11 +55,7 @@ class SmsLoader{
 	private function createSmsFromData(array $smsData, Requirements $requirements)
     {
         $sms = new Sms($smsData['price'],$smsData['income'], $requirements);
-        /*$sms->setId($shipData['id']);
-        $sms->setWeaponPower($shipData['weapon_power']);
-        $sms->setJediFactor($shipData['jedi_factor']);
-        $sms->setStrength($shipData['strength']);*/
-
+      
         return $sms;
     }
 	

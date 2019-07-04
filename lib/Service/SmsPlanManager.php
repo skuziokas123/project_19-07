@@ -27,8 +27,6 @@ class SmsPlanManager{
 			
 		}
 		
-		//print_r($winnerPlan);
-		
 		return $winnerPlan;
 		
 		
@@ -54,19 +52,13 @@ class SmsPlanManager{
 			}
 		}
 		
-		echo "\n".$nowHaveMessages." < ".$maxMessages."\n";
-		//exit();
 		if($nowHaveMessages>=$maxMessages){
-			echo "\n";
-			echo "hello 758";
-			echo "\n";
+		
 			throw new impossibleSplitPaymentException("\n*** Neįmanoma išskaidyti mokėjimo į ribotą kiekį žinučių ***\n");
 		}
 		
 		$this->smsPlanLimitByMaxMessages=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LIMIT_BY_MAX_MESSAGES,$smsPlanElements);
 		
-		
-		//print_r($this->smsPlanEfficient);
 		echo "\n";
 		echo "\n*** LIMIT BY MAX MESSAGES ***\n";
 		print_r($this->smsPlanLimitByMaxMessages->getIncome());
@@ -82,7 +74,6 @@ class SmsPlanManager{
 	}
 	
 	private function calcPlanEfficient(){
-		//getSmsObjsArraySortedByEfficiency
 		$smsPlanElements=array();
 		
 		$requiredIncomeTmp=0;
@@ -99,17 +90,7 @@ class SmsPlanManager{
 			}
 		}
 		
-		//kiek liko moketi?
-		//echo "\n";
-		//print_r($this->howMuchIsLeftToPay($smsPlanElements));
-		//exit();
-		
 		$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
-		
-		//print_r($this->smsLoaderResult->getSmsThatCanPayObjsArray($leftToPay));
-		//exit();
-		
-		//findEfficientSmsForLastPay
 		
 		$firstElement=$this->smsLoaderResult->getSmsThatCanPayObjsArray($leftToPay)[0];
 		$requiredIncomeTmp=$requiredIncomeTmp+$firstElement->getIncome();
@@ -117,8 +98,6 @@ class SmsPlanManager{
 		
 		$this->smsPlanEfficient=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_EFFICIENT,$smsPlanElements);
 		
-		
-		//print_r($this->smsPlanEfficient);
 		echo "\n";
 		echo "\n*** EFFICIENT ***\n";
 		print_r($this->smsPlanEfficient->getIncome());
@@ -130,7 +109,6 @@ class SmsPlanManager{
 		foreach($this->smsPlanEfficient->getSmsPlanElements() as $sms){
 			echo $sms->getPrice().', ';
 		}
-		//exit();
 		
 	}
 	
@@ -156,8 +134,6 @@ class SmsPlanManager{
 		
 		$this->smsPlanLessSms=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LESS_SMS,$smsPlanElements);
 		
-		
-		//print_r($this->smsPlanLessSms);
 		echo "\n*** LESS SMS ***\n";
 		print_r($this->smsPlanLessSms->getIncome());
 		echo "\n";
@@ -171,9 +147,7 @@ class SmsPlanManager{
 	}
 	
 	private function howMuchIsLeftToPay($alredyPayedSms){
-		//$leftToPay=0;
 		$payed=0;
-		//$needPay=0;
 		
 		foreach($alredyPayedSms as $sms){
 			$payed=$payed+$sms->getIncome();
@@ -181,20 +155,5 @@ class SmsPlanManager{
 		return $this->smsLoaderResult->getRequiredIncome()-$payed;
 		
 	}
-	
-	/*private function findEfficientSmsForLastPay($leftToPay){
-		//getSmsThatCanPayObjsArray(paySum)
-		$smsObjsArray=$this->smsLoaderResult->getSmsObjsArray();
-		$smsCandidatesForLastPay=array();
-		foreach($smsObjsArray as $sms){
-			if($sms->getIncome()>=$leftToPay){
-				//getPayCost($sum)
-				//getRealPayPrice
-				$smsCandidatesForLastPay[]=$sms;
-			}
-		}
-	}*/
-	
-	
 	
 }
