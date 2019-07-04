@@ -40,6 +40,8 @@ class SmsLoader{
 	
 	private function fetchAllSmsData()
     {
+		
+		
         $this->jsonContents = file_get_contents($this->filename);
 
         $this->jsonContents =  json_decode($this->jsonContents, true);

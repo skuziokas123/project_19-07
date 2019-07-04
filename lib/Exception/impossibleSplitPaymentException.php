@@ -1,5 +1,5 @@
 <?php
-class ReachMaxMessagesException extends Exception {
+class impossibleSplitPaymentException extends Exception {
   public function errorMessage() {
     //error message
     $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
