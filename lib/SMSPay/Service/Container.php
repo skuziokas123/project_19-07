@@ -1,4 +1,9 @@
 <?php
+namespace SMSPay\Service;
+
+use SMSPay\Service\SmsLoader;
+use SMSPay\Service\SmsPlanManager;
+use SMSPay\Service\Printer;
 
 
 class Container{

@@ -1,0 +1,8 @@
+{
+  "name": "sms/pay",
+  "autoload": {
+    "psr-4": {
+      "": "lib/"
+    }
+  }  
+}

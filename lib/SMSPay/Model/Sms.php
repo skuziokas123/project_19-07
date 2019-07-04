@@ -1,6 +1,6 @@
 <?php
-
-
+namespace SMSPay\Model;
+use SMSPay\Exception\tooLowIncomeException;
 
 class Sms{
 	private $price;

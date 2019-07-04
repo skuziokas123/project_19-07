@@ -1,5 +1,8 @@
 <?php
-
+namespace SMSPay\Service;
+use SMSPay\Model\SmsLoaderResult;
+use SMSPay\Model\SmsPlanManagerResult;
+use SMSPay\Exception\impossibleSplitPaymentException;
 
 class SmsPlanManager{
 	private $smsLoaderResult;

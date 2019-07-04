@@ -1,5 +1,10 @@
 <?php
-
+namespace SMSPay\Service;
+use SMSPay\Model\Requirements;
+use SMSPay\Model\Sms;
+use SMSPay\Model\SmsLoaderResult;
+use SMSPay\Exception\fileNotFoundException;
+use SMSPay\Exception\fileDataFormatException;
 
 class SmsLoader{
 	

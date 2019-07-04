@@ -1,4 +1,5 @@
 <?php
+namespace SMSPay\Model;
 
 class SmsLoaderResult{
 	private $smsObjsArray;

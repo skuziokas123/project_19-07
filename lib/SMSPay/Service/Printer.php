@@ -1,5 +1,6 @@
 <?php
-
+namespace SMSPay\Service;
+use SMSPay\Model\SmsPlanManagerResult;
 class Printer{
 	public function printItems(SmsPlanManagerResult $plan){
 		$printItems=array();

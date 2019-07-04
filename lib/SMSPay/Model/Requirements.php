@@ -1,5 +1,7 @@
 <?php
 
+namespace SMSPay\Model;
+
 class Requirements{
 	private $requiredIncome;
 	private $paySum;

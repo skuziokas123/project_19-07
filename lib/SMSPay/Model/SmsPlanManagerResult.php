@@ -1,4 +1,5 @@
 <?php
+namespace SMSPay\Model;
 
 class SmsPlanManagerResult{
 	const SMS_PLAN_TITLE_LESS_SMS="LESS_SMS";
