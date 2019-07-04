@@ -2,30 +2,40 @@
 namespace SMSPay\Service;
 use SMSPay\Model\SmsLoaderResult;
 use SMSPay\Model\SmsPlanManagerResult;
-use SMSPay\Exception\impossibleSplitPaymentException;
+//use SMSPay\Exception\impossibleSplitPaymentException;
 
 class SmsPlanManager{
 	private $smsLoaderResult;
 	private $smsPlanLessSms;
 	private $smsPlanEfficient;
 	private $smsPlanLimitByMaxMessages;
+	private $smsPlansCalculator;
 	
 	
-	public function __construct(SmsLoaderResult $smsLoaderResult){
+	public function __construct(SmsLoaderResult $smsLoaderResult, SmsPlansCalculator $smsPlansCalculator){
 		$this->smsLoaderResult=$smsLoaderResult;
+		$this->smsPlansCalculator=$smsPlansCalculator;
 	}
 	
 	public function findPlan(){
 		
 		$this->calcPlanLessSms();
-		$this->calcPlanEfficient();
+		//$this->calcPlanEfficient();
+		$this->smsPlanEfficient=$this->smsPlansCalculator->calcPlanEfficient(
+		$this->smsLoaderResult->getSmsObjsArraySortedByEfficiency());
+		
+		
+		
+		
 		
 		$winnerPlan=$this->smsPlanLessSms->comparePlans($this->smsPlanEfficient);
 		
 		$maxMessages=$winnerPlan->getSmsPlanElements()[0]->getRequirements()->getMaxMessages();
 		$smsQuantity=$winnerPlan->getSmsQuantity();
 		if(($maxMessages!==null)&&($smsQuantity>$maxMessages)){
-			$this->calcPlanLimitByMaxMessages($maxMessages);
+			//$this->calcPlanLimitByMaxMessages($maxMessages);
+			$this->smsPlanLimitByMaxMessages=$this->smsPlansCalculator->calcPlanLimitByMaxMessages(
+			$maxMessages, $this->smsLoaderResult->getSmsObjsArraySortedByIncDesc());
 			$winnerPlan=$this->smsPlanLimitByMaxMessages;
 			
 		}
@@ -35,7 +45,7 @@ class SmsPlanManager{
 		
 	}
 	
-	private function calcPlanLimitByMaxMessages($maxMessages){
+	/*private function calcPlanLimitByMaxMessages($maxMessages){
 		$smsPlanElements=array();
 		
 		$requiredIncomeTmp=0;
@@ -74,9 +84,9 @@ class SmsPlanManager{
 			echo $sms->getPrice().', ';
 		}
 		echo "\n";
-	}
+	}*/
 	
-	private function calcPlanEfficient(){
+	/*private function calcPlanEfficient(){
 		$smsPlanElements=array();
 		
 		$requiredIncomeTmp=0;
@@ -113,7 +123,7 @@ class SmsPlanManager{
 			echo $sms->getPrice().', ';
 		}
 		
-	}
+	}*/
 	
 	private function calcPlanLessSms(){
 		$smsPlanElements=array();
@@ -149,7 +159,7 @@ class SmsPlanManager{
 		}
 	}
 	
-	private function howMuchIsLeftToPay($alredyPayedSms){
+	/*private function howMuchIsLeftToPay($alredyPayedSms){
 		$payed=0;
 		
 		foreach($alredyPayedSms as $sms){
@@ -157,6 +167,6 @@ class SmsPlanManager{
 		}
 		return $this->smsLoaderResult->getRequiredIncome()-$payed;
 		
-	}
+	}*/
 	
 }

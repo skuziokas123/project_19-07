@@ -4,6 +4,7 @@ namespace SMSPay\Service;
 use SMSPay\Service\SmsLoader;
 use SMSPay\Service\SmsPlanManager;
 use SMSPay\Service\Printer;
+use SMSPay\Service\SmsPlansCalculator;
 
 
 class Container{
@@ -12,11 +13,15 @@ class Container{
 	private $smsPlanManager;
 	private $configuration;
 	private $printer;
+	//private $printer;
+	private $smsPlansCalculator;
 	
 	public function __construct(array $configuration)
     {
         $this->configuration = $configuration;
     }
+	
+	
 	
 	public function getSmsLoader()
     {
@@ -30,10 +35,19 @@ class Container{
 	public function getSmsPlanManager()
     {
         if ($this->smsPlanManager === null) {
-            $this->smsPlanManager = new SmsPlanManager($this->getSmsLoader()->load());
+            $this->smsPlanManager = new SmsPlanManager($this->getSmsLoader()->load(), $this->getSmsPlansCalculator());
         }
 
         return $this->smsPlanManager;
+    }
+	
+	public function getSmsPlansCalculator()
+    {
+        if ($this->smsPlansCalculator === null) {
+            $this->smsPlansCalculator = new smsPlansCalculator($this->getSmsLoader()->load());
+        }
+
+        return $this->smsPlansCalculator;
     }
 	
 	public function getPrinter()
