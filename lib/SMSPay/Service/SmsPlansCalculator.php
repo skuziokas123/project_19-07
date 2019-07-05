@@ -77,7 +77,7 @@ class SmsPlansCalculator{
 		$smsPlanEfficient=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_EFFICIENT,$smsPlanElements);
 		
 		echo "\n";
-		echo "\n*** EFFICIENT ***\n";
+		echo "\n*** EFFICIENT 1 ***\n";
 		print_r($smsPlanEfficient->getIncome());
 		echo "\n";
 		print_r($smsPlanEfficient->getPrice());
