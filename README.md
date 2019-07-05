@@ -1,8 +1,8 @@
 # project_19-07
 
-composer install
+Run application:
 
-Run application: 
+composer install
 
 php script.php input.json
 
