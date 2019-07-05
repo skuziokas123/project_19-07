@@ -2,4 +2,4 @@
 
 composer install
 
-Run application: php script.php
+Run application: php script.php input.json

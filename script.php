@@ -2,6 +2,13 @@
 require __DIR__.'/bootstrap.php';
 use SMSPay\Service\Container;
 try {
+	
+	//print_r($argv);
+	
+	if(isset($argv['1'])){
+		$configuration['jsonFilePath']=$argv[1];
+	}
+	
 	$container=new Container($configuration);
 
 	$smsPlanManager=$container->getSmsPlanManager();
