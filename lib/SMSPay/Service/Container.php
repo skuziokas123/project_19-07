@@ -13,7 +13,6 @@ class Container{
 	private $smsPlanManager;
 	private $configuration;
 	private $printer;
-	//private $printer;
 	private $smsPlansCalculator;
 	
 	public function __construct(array $configuration)

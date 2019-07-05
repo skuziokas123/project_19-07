@@ -13,7 +13,6 @@ class SmsPlanManagerResult{
 		$this->title=$title;
         $this->smsPlanElements = $smsPlanElements;
 		
-		
     }
 	
 	public function getSmsPlanElements(){
