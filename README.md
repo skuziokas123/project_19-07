@@ -2,5 +2,5 @@
 
 composer install
 
-To run application 
+To run application: 
 php script.php
