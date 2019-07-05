@@ -19,7 +19,12 @@ class SmsPlanManager{
 	
 	public function findPlan(){
 		
-		$this->calcPlanLessSms();
+		//$this->calcPlanLessSms();
+		$this->smsPlanLessSms=$this->smsPlansCalculator->calcPlanEfficient(
+		$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc());
+		
+		
+		
 		//$this->calcPlanEfficient();
 		$this->smsPlanEfficient=$this->smsPlansCalculator->calcPlanEfficient(
 		$this->smsLoaderResult->getSmsObjsArraySortedByEfficiency());
@@ -125,7 +130,7 @@ class SmsPlanManager{
 		
 	}*/
 	
-	private function calcPlanLessSms(){
+	/*private function calcPlanLessSms(){
 		$smsPlanElements=array();
 		
 		$requiredIncomeTmp=0;
@@ -157,7 +162,7 @@ class SmsPlanManager{
 		foreach($this->smsPlanLessSms->getSmsPlanElements() as $sms){
 			echo $sms->getPrice().', ';
 		}
-	}
+	}*/
 	
 	/*private function howMuchIsLeftToPay($alredyPayedSms){
 		$payed=0;

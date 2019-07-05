@@ -11,6 +11,43 @@ class SmsPlansCalculator{
 		$this->smsLoaderResult=$smsLoaderResult;
 	}
 	
+	public function calcPlanLessSms(array $smsArraySortedByIncDesc){
+		$smsPlanElements=array();
+		
+		$requiredIncomeTmp=0;
+		//$smsArraySortedByIncDesc=$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc();
+		
+		foreach($smsArraySortedByIncDesc as $sms){
+				while(($requiredIncomeTmp+$sms->getIncome())
+				<
+			$this->smsLoaderResult->getRequiredIncome()){
+				$requiredIncomeTmp=$requiredIncomeTmp+$sms->getIncome();
+				$smsPlanElements[]=$sms;
+				
+			}
+		}
+		
+		$endArrayElement=end($smsArraySortedByIncDesc);
+		$requiredIncomeTmp=$requiredIncomeTmp+$endArrayElement->getIncome();
+		$smsPlanElements[]=$endArrayElement;
+		
+		//$this->smsPlanLessSms=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LESS_SMS,$smsPlanElements);
+		$smsPlanLessSms=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LESS_SMS,$smsPlanElements);
+		
+		echo "\n*** LESS SMS ***\n";
+		print_r($smsPlanLessSms->getIncome());
+		echo "\n";
+		print_r($smsPlanLessSms->getPrice());
+		echo "\n";
+		print_r($smsPlanLessSms->getSmsQuantity());
+		echo "\n";
+		foreach($smsPlanLessSms->getSmsPlanElements() as $sms){
+			echo $sms->getPrice().', ';
+		}
+		
+		return $smsPlanLessSms;
+	}
+	
 	public function calcPlanEfficient(array $smsArraySortedByEfficiency){
 		$smsPlanElements=array();
 		
