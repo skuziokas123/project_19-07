@@ -28,7 +28,7 @@ class SmsPlansCalculatorTests extends \PHPUnit_Framework_TestCase
 		$smsArray[]=$sms_5;
 		
 		$smsLoaderResult=new SmsLoaderResult($smsArray);
-        $this->smsPlansCalculator = new SmsPlansCalculator($smsLoaderResult, TRUE);
+        $this->smsPlansCalculator = new SmsPlansCalculator($smsLoaderResult, FALSE);
     }
  
     protected function tearDown()
