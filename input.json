@@ -3,6 +3,8 @@
     {"price": 0.5, "income": 0.41},
     {"price": 1, "income": 0.96},
     {"price": 2, "income": 1.91},
+	{"price": 0.1, "income": 0.08},
+	{"price": 0.02, "income": 0.01},
     {"price": 5, "income": 3.9}
   ],
   "max_messages": 4,

@@ -20,23 +20,26 @@ class SmsPlansCalculator{
 		$requiredIncomeTmp=0;
 		
 		$smsArraySortedByIncDesc=$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc();
-		
+		$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
 		foreach($smsArraySortedByIncDesc as $sms){
 				while(
-					($requiredIncomeTmp+$sms->getIncome())
-					<=
-					$sms->getRequirements()->getRequiredIncome()
+					$leftToPay-$sms->getIncome()>=0
+					//($requiredIncomeTmp+$sms->getIncome())
+					//<=
+					//$sms->getRequirements()->getRequiredIncome()
 				){
 				$requiredIncomeTmp=$requiredIncomeTmp+$sms->getIncome();
 				$smsPlanElements[]=$sms;
+				$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
 				
 			}
 		}
 		
-		if((
-			$requiredIncomeTmp+$sms->getIncome())
+		if(
+			$leftToPay>0
+			/*$requiredIncomeTmp+$sms->getIncome())
 			<
-			$sms->getRequirements()->getRequiredIncome()
+			$sms->getRequirements()->getRequiredIncome()*/
 		){
 			$endArrayElement=end($smsArraySortedByIncDesc);
 			$requiredIncomeTmp=$requiredIncomeTmp+$endArrayElement->getIncome();
@@ -129,17 +132,22 @@ class SmsPlansCalculator{
 		$smsObjsArraySortedByIncDesc=$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc();
 		
 		$maxMessages=$smsObjsArraySortedByIncDesc[0]->getRequirements()->getMaxMessages();
-	
+		//$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
 		foreach($smsObjsArraySortedByIncDesc as $sms){
 			
 			while(($nowHaveMessages<$maxMessages)&&
-			(($requiredIncomeTmp)
-				<
-			$sms->getRequirements()->getRequiredIncome()))
+				(
+					($requiredIncomeTmp)
+					<
+					$sms->getRequirements()->getRequiredIncome()
+					//$leftToPay-$sms->getIncome()>=0
+				)
+			)
 			{
 				$nowHaveMessages=$nowHaveMessages+1;
 				$smsPlanElements[]=$sms;
 				$requiredIncomeTmp=$requiredIncomeTmp+$sms->getIncome();
+				$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
 				
 			}
 		}
