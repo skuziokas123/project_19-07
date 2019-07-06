@@ -6,33 +6,46 @@ use SMSPay\Exception\impossibleSplitPaymentException;
 
 class SmsPlansCalculator{
 	private $smsLoaderResult;
+	private $debug;
 	
-	public function __construct(SmsLoaderResult $smsLoaderResult){
+	public function __construct(SmsLoaderResult $smsLoaderResult, $debug=FALSE){
 		$this->smsLoaderResult=$smsLoaderResult;
+		$this->debug=$debug;
 	}
 	
-	public function calcPlanLessSms(array $smsArraySortedByIncDesc){
+	//public function calcPlanLessSms(array $smsArraySortedByIncDesc){
+	public function calcPlanLessSms(){
 		$smsPlanElements=array();
 		
 		$requiredIncomeTmp=0;
 		
+		$smsArraySortedByIncDesc=$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc();
+		
 		foreach($smsArraySortedByIncDesc as $sms){
-				while(($requiredIncomeTmp+$sms->getIncome())
-				<
-			$this->smsLoaderResult->getRequiredIncome()){
+				while(
+					($requiredIncomeTmp+$sms->getIncome())
+					<=
+					$sms->getRequirements()->getRequiredIncome()
+				){
 				$requiredIncomeTmp=$requiredIncomeTmp+$sms->getIncome();
 				$smsPlanElements[]=$sms;
 				
 			}
 		}
 		
-		$endArrayElement=end($smsArraySortedByIncDesc);
-		$requiredIncomeTmp=$requiredIncomeTmp+$endArrayElement->getIncome();
-		$smsPlanElements[]=$endArrayElement;
+		if((
+			$requiredIncomeTmp+$sms->getIncome())
+			<
+			$sms->getRequirements()->getRequiredIncome()
+		){
+			$endArrayElement=end($smsArraySortedByIncDesc);
+			$requiredIncomeTmp=$requiredIncomeTmp+$endArrayElement->getIncome();
+			$smsPlanElements[]=$endArrayElement;
+		}
 		
 		$smsPlanLessSms=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LESS_SMS,$smsPlanElements);
 		
-		echo "\n*** LESS SMS ***\n";
+		/*echo "\n*** LESS SMS ***\n";
 		print_r($smsPlanLessSms->getIncome());
 		echo "\n";
 		print_r($smsPlanLessSms->getPrice());
@@ -41,35 +54,50 @@ class SmsPlansCalculator{
 		echo "\n";
 		foreach($smsPlanLessSms->getSmsPlanElements() as $sms){
 			echo $sms->getPrice().', ';
+		}*/
+		
+		if($this->debug){
+			$this->debugSmsPlan($smsPlanLessSms, 
+				SmsPlanManagerResult::SMS_PLAN_TITLE_LESS_SMS
+			);
 		}
 		
 		return $smsPlanLessSms;
 	}
 	
-	public function calcPlanEfficient(array $smsArraySortedByEfficiency){
+	//public function calcPlanEfficient(array $smsArraySortedByEfficiency){
+	public function calcPlanEfficient(){
 		$smsPlanElements=array();
 		
 		$requiredIncomeTmp=0;
-	
+		
+		$smsArraySortedByEfficiency=$this->smsLoaderResult->getSmsObjsArraySortedByEfficiency();
+		$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
 		foreach($smsArraySortedByEfficiency as $sms){
-				while(($requiredIncomeTmp+$sms->getIncome())
-				<
-			$sms->getRequirements()->getRequiredIncome())
+			
+			while(
+				$leftToPay-$sms->getIncome()>=0
+				//($requiredIncomeTmp+$sms->getIncome())
+				//<=
+				//$sms->getRequirements()->getRequiredIncome()
+			)
 			{
 				$requiredIncomeTmp=$requiredIncomeTmp+$sms->getIncome();
 				$smsPlanElements[]=$sms;
-				
+				$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
 			}
 		}
 		
-		$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
+		//$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
 		
-		$firstElement=$this->smsLoaderResult->getSmsThatCanPayObjsArray($leftToPay)[0];
-		$requiredIncomeTmp=$requiredIncomeTmp+$firstElement->getIncome();
-		$smsPlanElements[]=$firstElement;
+		if($leftToPay>0){
+			$firstElement=$this->smsLoaderResult->getSmsThatCanPayObjsArray($leftToPay)[0];
+			$requiredIncomeTmp=$requiredIncomeTmp+$firstElement->getIncome();
+			$smsPlanElements[]=$firstElement;
+		}
 		$smsPlanEfficient=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_EFFICIENT,$smsPlanElements);
 		
-		echo "\n";
+		/*echo "\n";
 		echo "\n*** EFFICIENT 1 ***\n";
 		print_r($smsPlanEfficient->getIncome());
 		echo "\n";
@@ -79,18 +107,31 @@ class SmsPlansCalculator{
 		echo "\n";
 		foreach($smsPlanEfficient->getSmsPlanElements() as $sms){
 			echo $sms->getPrice().', ';
+		}*/
+		
+		if($this->debug){
+			$this->debugSmsPlan($smsPlanEfficient, 
+				SmsPlanManagerResult::SMS_PLAN_TITLE_EFFICIENT
+			);
 		}
+		
 		return $smsPlanEfficient;
 		
 	}
 	
-	public function calcPlanLimitByMaxMessages($maxMessages, array $smsObjsArraySortedByIncDesc){
+	//public function calcPlanLimitByMaxMessages($maxMessages, array $smsObjsArraySortedByIncDesc){
+	public function calcPlanLimitByMaxMessages(){
 		$smsPlanElements=array();
 		
 		$requiredIncomeTmp=0;
 		$nowHaveMessages=0;
+		
+		$smsObjsArraySortedByIncDesc=$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc();
+		
+		$maxMessages=$smsObjsArraySortedByIncDesc[0]->getRequirements()->getMaxMessages();
 	
 		foreach($smsObjsArraySortedByIncDesc as $sms){
+			
 			while(($nowHaveMessages<$maxMessages)&&
 			(($requiredIncomeTmp)
 				<
@@ -108,7 +149,7 @@ class SmsPlansCalculator{
 			throw new impossibleSplitPaymentException("\n*** Neįmanoma išskaidyti mokėjimo į ribotą kiekį žinučių ***\n");
 		}
 		$smsPlanLimitByMaxMessages=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LIMIT_BY_MAX_MESSAGES,$smsPlanElements);
-		echo "\n";
+		/*echo "\n";
 		echo "\n*** LIMIT BY MAX MESSAGES ***\n";
 		print_r($smsPlanLimitByMaxMessages->getIncome());
 		echo "\n";
@@ -119,18 +160,44 @@ class SmsPlansCalculator{
 		foreach($smsPlanLimitByMaxMessages->getSmsPlanElements() as $sms){
 			echo $sms->getPrice().', ';
 		}
-		echo "\n";
+		echo "\n";*/
+		
+		if($this->debug){
+			$this->debugSmsPlan($smsPlanLimitByMaxMessages, 
+				SmsPlanManagerResult::SMS_PLAN_TITLE_LIMIT_BY_MAX_MESSAGES
+			);
+		}
 		
 		return $smsPlanLimitByMaxMessages;
 	}
 	
-	private function howMuchIsLeftToPay($alredyPayedSms){
-		$payed=0;
-		
-		foreach($alredyPayedSms as $sms){
-			$payed=$payed+$sms->getIncome();
+	private function debugSmsPlan(SmsPlanManagerResult $smsPlan, $planTitle){
+		echo "\n";
+		echo "\n*** ".$planTitle." ***\n";
+		print_r($smsPlan->getIncome());
+		echo "\n";
+		print_r($smsPlan->getPrice());
+		echo "\n";
+		print_r($smsPlan->getSmsQuantity());
+		echo "\n";
+		foreach($smsPlan->getSmsPlanElements() as $sms){
+			echo $sms->getPrice().', ';
 		}
-		return $alredyPayedSms[0]->getRequirements()->getRequiredIncome()-$payed;
+		echo "\n";
+	}
+	
+	private function howMuchIsLeftToPay(array $alredyPayedSms){
+		$payed=0;
+		$leftToPay=$this->smsLoaderResult->getRequirements()->getRequiredIncome();
+		if(!empty($alredyPayedSms)){
+		
+			foreach($alredyPayedSms as $sms){
+				$payed=$payed+$sms->getIncome();
+			}
+			//return $alredyPayedSms[0]->getRequirements()->getRequiredIncome()-$payed;
+			$leftToPay=$leftToPay-$payed;
+		}
+		return $leftToPay;
 		
 	}
 	

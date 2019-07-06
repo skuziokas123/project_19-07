@@ -43,7 +43,7 @@ class Container{
 	public function getSmsPlansCalculator()
     {
         if ($this->smsPlansCalculator === null) {
-            $this->smsPlansCalculator = new smsPlansCalculator($this->getSmsLoader()->load());
+            $this->smsPlansCalculator = new smsPlansCalculator($this->getSmsLoader()->load(), $this->configuration['debug']);
         }
 
         return $this->smsPlansCalculator;

@@ -34,8 +34,8 @@ class SmsLoader{
 			$smsObjsArray[]=$this->createSmsFromData($list, $requirements);
 			
 		}
-		
-		return new SmsLoaderResult($smsObjsArray, $requirements);
+		//return new SmsLoaderResult($smsObjsArray, $requirements);
+		return new SmsLoaderResult($smsObjsArray);
 	}
 	
 	private function validateFileData(){
