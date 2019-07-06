@@ -13,7 +13,6 @@ class SmsPlansCalculator{
 		$this->debug=$debug;
 	}
 	
-	//public function calcPlanLessSms(array $smsArraySortedByIncDesc){
 	public function calcPlanLessSms(){
 		$smsPlanElements=array();
 		
@@ -24,9 +23,7 @@ class SmsPlansCalculator{
 		foreach($smsArraySortedByIncDesc as $sms){
 				while(
 					$leftToPay-$sms->getIncome()>=0
-					//($requiredIncomeTmp+$sms->getIncome())
-					//<=
-					//$sms->getRequirements()->getRequiredIncome()
+					
 				){
 				$requiredIncomeTmp=$requiredIncomeTmp+$sms->getIncome();
 				$smsPlanElements[]=$sms;
@@ -37,9 +34,7 @@ class SmsPlansCalculator{
 		
 		if(
 			$leftToPay>0
-			/*$requiredIncomeTmp+$sms->getIncome())
-			<
-			$sms->getRequirements()->getRequiredIncome()*/
+			
 		){
 			$endArrayElement=end($smsArraySortedByIncDesc);
 			$requiredIncomeTmp=$requiredIncomeTmp+$endArrayElement->getIncome();
@@ -47,17 +42,6 @@ class SmsPlansCalculator{
 		}
 		
 		$smsPlanLessSms=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LESS_SMS,$smsPlanElements);
-		
-		/*echo "\n*** LESS SMS ***\n";
-		print_r($smsPlanLessSms->getIncome());
-		echo "\n";
-		print_r($smsPlanLessSms->getPrice());
-		echo "\n";
-		print_r($smsPlanLessSms->getSmsQuantity());
-		echo "\n";
-		foreach($smsPlanLessSms->getSmsPlanElements() as $sms){
-			echo $sms->getPrice().', ';
-		}*/
 		
 		if($this->debug){
 			$this->debugSmsPlan($smsPlanLessSms, 
@@ -68,7 +52,6 @@ class SmsPlansCalculator{
 		return $smsPlanLessSms;
 	}
 	
-	//public function calcPlanEfficient(array $smsArraySortedByEfficiency){
 	public function calcPlanEfficient(){
 		$smsPlanElements=array();
 		
@@ -80,9 +63,7 @@ class SmsPlansCalculator{
 			
 			while(
 				$leftToPay-$sms->getIncome()>=0
-				//($requiredIncomeTmp+$sms->getIncome())
-				//<=
-				//$sms->getRequirements()->getRequiredIncome()
+				
 			)
 			{
 				$requiredIncomeTmp=$requiredIncomeTmp+$sms->getIncome();
@@ -90,27 +71,13 @@ class SmsPlansCalculator{
 				$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
 			}
 		}
-		
-		//$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
-		
+				
 		if($leftToPay>0){
 			$firstElement=$this->smsLoaderResult->getSmsThatCanPayObjsArray($leftToPay)[0];
 			$requiredIncomeTmp=$requiredIncomeTmp+$firstElement->getIncome();
 			$smsPlanElements[]=$firstElement;
 		}
 		$smsPlanEfficient=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_EFFICIENT,$smsPlanElements);
-		
-		/*echo "\n";
-		echo "\n*** EFFICIENT 1 ***\n";
-		print_r($smsPlanEfficient->getIncome());
-		echo "\n";
-		print_r($smsPlanEfficient->getPrice());
-		echo "\n";
-		print_r($smsPlanEfficient->getSmsQuantity());
-		echo "\n";
-		foreach($smsPlanEfficient->getSmsPlanElements() as $sms){
-			echo $sms->getPrice().', ';
-		}*/
 		
 		if($this->debug){
 			$this->debugSmsPlan($smsPlanEfficient, 
@@ -122,7 +89,6 @@ class SmsPlansCalculator{
 		
 	}
 	
-	//public function calcPlanLimitByMaxMessages($maxMessages, array $smsObjsArraySortedByIncDesc){
 	public function calcPlanLimitByMaxMessages(){
 		$smsPlanElements=array();
 		
@@ -132,7 +98,6 @@ class SmsPlansCalculator{
 		$smsObjsArraySortedByIncDesc=$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc();
 		
 		$maxMessages=$smsObjsArraySortedByIncDesc[0]->getRequirements()->getMaxMessages();
-		//$leftToPay=$this->howMuchIsLeftToPay($smsPlanElements);
 		foreach($smsObjsArraySortedByIncDesc as $sms){
 			
 			while(($nowHaveMessages<$maxMessages)&&
@@ -140,7 +105,6 @@ class SmsPlansCalculator{
 					($requiredIncomeTmp)
 					<
 					$sms->getRequirements()->getRequiredIncome()
-					//$leftToPay-$sms->getIncome()>=0
 				)
 			)
 			{
@@ -157,18 +121,6 @@ class SmsPlansCalculator{
 			throw new impossibleSplitPaymentException("\n*** Neįmanoma išskaidyti mokėjimo į ribotą kiekį žinučių ***\n");
 		}
 		$smsPlanLimitByMaxMessages=new SmsPlanManagerResult(SmsPlanManagerResult::SMS_PLAN_TITLE_LIMIT_BY_MAX_MESSAGES,$smsPlanElements);
-		/*echo "\n";
-		echo "\n*** LIMIT BY MAX MESSAGES ***\n";
-		print_r($smsPlanLimitByMaxMessages->getIncome());
-		echo "\n";
-		print_r($smsPlanLimitByMaxMessages->getPrice());
-		echo "\n";
-		print_r($smsPlanLimitByMaxMessages->getSmsQuantity());
-		echo "\n";
-		foreach($smsPlanLimitByMaxMessages->getSmsPlanElements() as $sms){
-			echo $sms->getPrice().', ';
-		}
-		echo "\n";*/
 		
 		if($this->debug){
 			$this->debugSmsPlan($smsPlanLimitByMaxMessages, 
@@ -202,7 +154,6 @@ class SmsPlansCalculator{
 			foreach($alredyPayedSms as $sms){
 				$payed=$payed+$sms->getIncome();
 			}
-			//return $alredyPayedSms[0]->getRequirements()->getRequiredIncome()-$payed;
 			$leftToPay=$leftToPay-$payed;
 		}
 		return $leftToPay;

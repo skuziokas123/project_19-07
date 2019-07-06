@@ -3,18 +3,11 @@ namespace SMSPay\Model;
 
 class SmsLoaderResult{
 	private $smsObjsArray;
-	//private $requirements;
 	
-	//public function __construct(array $smsObjsArray, Requirements $requirements)
 	public function __construct(array $smsObjsArray)
     {
         $this->smsObjsArray = $smsObjsArray;
-		//$this->requirements = $requirements;
     }
-	
-	/*public function getRequiredIncome(){
-		return $this->requirements->getRequiredIncome();
-	}*/
 	
 	public function getSmsObjsArray(){
 		return $this->smsObjsArray;

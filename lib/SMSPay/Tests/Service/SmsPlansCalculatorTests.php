@@ -1,15 +1,6 @@
 <?php
-//require 'Calculator.php';
 namespace SMSPay\Tests\Service;
-/*use SMSPay\Model\SmsLoaderResult;
-use SMSPay\Model\SMS;
-use SMSPay\Model\Requirements;
-use SMSPay\Service\SmsPlansCalculator;*/
-/*require_once "C:\Users\user\Dropbox\projects\Pay-19-06-28\SMS_Bank\lib\SMSPay\Model\Requirements.php";
-require_once "C:\Users\user\Dropbox\projects\Pay-19-06-28\SMS_Bank\lib\SMSPay\Model\Sms.php";
-require_once "C:\Users\user\Dropbox\projects\Pay-19-06-28\SMS_Bank\lib\SMSPay\Model\SmsLoaderResult.php";
-require_once "C:\Users\user\Dropbox\projects\Pay-19-06-28\SMS_Bank\lib\SMSPay\Model\SmsPlanManagerResult.php";
-require_once "C:\Users\user\Dropbox\projects\Pay-19-06-28\SMS_Bank\lib\SMSPay\Service\SmsPlansCalculator.php";*/
+
 use SMSPay\Model\Requirements;
 use SMSPay\Model\SMS;
 use SMSPay\Model\SmsLoaderResult;

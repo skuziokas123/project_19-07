@@ -19,11 +19,9 @@ class SmsPlanManager{
 	public function findPlan(){
 		
 		$this->smsPlanLessSms=$this->smsPlansCalculator->calcPlanLessSms(
-			//$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc()
 		);
 		
 		$this->smsPlanEfficient=$this->smsPlansCalculator->calcPlanEfficient(
-			//$this->smsLoaderResult->getSmsObjsArraySortedByEfficiency()
 		);
 		
 		$winnerPlan=$this->smsPlanLessSms->comparePlans($this->smsPlanEfficient);
@@ -32,9 +30,7 @@ class SmsPlanManager{
 		$smsQuantity=$winnerPlan->getSmsQuantity();
 		if(($maxMessages!==null)&&($smsQuantity>$maxMessages)){
 			$this->smsPlanLimitByMaxMessages=$this->smsPlansCalculator->calcPlanLimitByMaxMessages(
-				//$maxMessages
-				//, 
-				//$this->smsLoaderResult->getSmsObjsArraySortedByIncDesc()
+				
 			);
 			$winnerPlan=$this->smsPlanLimitByMaxMessages;
 			
