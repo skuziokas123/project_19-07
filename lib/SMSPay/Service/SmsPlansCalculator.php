@@ -100,7 +100,7 @@ class SmsPlansCalculator{
 		$maxMessages=$smsObjsArraySortedByIncDesc[0]->getRequirements()->getMaxMessages();
 		foreach($smsObjsArraySortedByIncDesc as $sms){
 			
-			while(($nowHaveMessages<$maxMessages)&&
+			while(($nowHaveMessages<=$maxMessages)&&
 				(
 					($requiredIncomeTmp)
 					<
@@ -116,7 +116,7 @@ class SmsPlansCalculator{
 			}
 		}
 		
-		if($nowHaveMessages>=$maxMessages){
+		if($nowHaveMessages>$maxMessages){
 		
 			throw new impossibleSplitPaymentException("\n*** Neįmanoma išskaidyti mokėjimo į ribotą kiekį žinučių ***\n");
 		}
